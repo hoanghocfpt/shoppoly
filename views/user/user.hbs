@@ -1,0 +1,83 @@
+<div class="grid grid-cols-[26%,74%] max-w-7xl mx-auto mb-8">
+            <div class="w-full max-w-[330px] shadow-xl rounded-xl overflow-hidden">
+                <div class="flex p-6 gap-4 items-center">
+                    <svg width="50" height="50" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.5 0C6.50896 0 0 6.50896 0 14.5C0 22.491 6.50896 29 14.5 29C22.491 29 29 22.491 29 14.5C29 6.50896 22.5063 0 14.5 0ZM14.5 1.06955C21.9104 1.06955 27.9305 7.08957 27.9305 14.5C27.9305 17.7392 26.7845 20.7034 24.8746 23.0258C24.3093 21.1006 23.148 19.3588 21.4979 18.0448C20.2908 17.0669 18.8699 16.3641 17.3419 15.9821C19.2366 14.9737 20.52 12.9721 20.52 10.6802C20.52 7.36459 17.8156 4.66017 14.5 4.66017C11.1844 4.66017 8.47998 7.33404 8.47998 10.6649C8.47998 12.9568 9.76344 14.9584 11.6581 15.9668C10.1301 16.3488 8.70917 17.0516 7.50211 18.0295C5.86723 19.3435 4.69073 21.0854 4.12539 23.0105C2.21549 20.6881 1.06955 17.7239 1.06955 14.4847C1.08483 7.08957 7.10485 1.06955 14.5 1.06955ZM14.5 15.6154C11.765 15.6154 9.54952 13.3999 9.54952 10.6649C9.54952 7.92993 11.765 5.71444 14.5 5.71444C17.235 5.71444 19.4505 7.92993 19.4505 10.6649C19.4505 13.3999 17.235 15.6154 14.5 15.6154ZM14.5 27.9152C10.7871 27.9152 7.42571 26.4025 4.99631 23.9578C5.40885 21.9868 6.52423 20.1839 8.17439 18.8546C9.9315 17.4489 12.1776 16.6697 14.5 16.6697C16.8224 16.6697 19.0685 17.4489 20.8256 18.8546C22.4758 20.1839 23.5911 21.9868 24.0037 23.9578C21.5743 26.4025 18.2129 27.9152 14.5 27.9152Z" fill="black"></path></svg>
+                    <span id="fullname" class="font-bold text-xl"></span>
+                </div>
+                <div class="px-6 flex items-center justify-center mb-4">
+                    <div id="qrcode"></div>
+                </div>
+                <div class="flex justify-between px-4 items-center">
+                    <span class="text-sm font-bold">SDT tích điểm</span>
+                    <span id="phonePoint" class="text-sm font-medium"></span>
+                </div>
+                <div class="px-4 py-4">
+                    <div id="rankColor" class="rounded-xl bg-gradient-to-r p-3">
+                        
+                        <div class="bg-">
+                            <div class="text-white flex gap-2">
+                                <span id="rankName" class="uppercase font-extrabold text-white">bronze</span> | <span id="point" class="text-white font-semibold">0 Point</span>
+                            </div>
+                            <p class="text-sm text-white">Mua thêm <span class="font-semibold">200.000đ</span> để thăng hạng SILVER</p>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </div>
+            <div class="ml-6">
+                <div>
+                    <ol class="flex gap-1 mb-3">
+                        <li>
+                            <a href="#" class="text-sm text-gray-500 hover:text-black">Trang chủ</a>
+                        </li>
+                        <span>></span>
+                        <li>
+                            <a href="#" class="text-sm text-gray-500 hover:text-black">Tài khoản</a>
+                    </ol>
+                </div>
+                <h2 class="font-bold text-2xl mb-5">Tài khoản</h2>
+                <div>
+                    <form action="" class="grid grid-cols-2 gap-5">
+                        <div class="flex flex-col-reverse">
+                            <input id="firstname" name="name" type="text" value="" class="focus:shadow-xl focus:ring-[.9px] focus:ring-[#CB3D30] border border-gray-300 px-3 pb-3 pt-2 rounded-md leading-none outline-none">
+                            <label class="mb-2 font-semibold" for="">Tên</label    >
+                        </div>
+                        <div class="flex flex-col-reverse">
+                            <input id="lastname" name="name" type="text" value="" class="focus:shadow-xl focus:ring-[.9px] focus:ring-[#CB3D30] border border-gray-300 px-3 pb-3 pt-2 rounded-md leading-none outline-none">
+                            <label class="mb-2 font-semibold" for="">Họ</label    >
+                        </div>
+                        <div class="flex flex-col-reverse">
+                            <input id="email" name="name" type="text" value="" class="focus:shadow-xl focus:ring-[.9px] focus:ring-[#CB3D30] border border-gray-300 px-3 pb-3 pt-2 rounded-md leading-none outline-none">
+                            <label class="mb-2 font-semibold" for="">Email</label    >
+                        </div>
+                        <div class="flex flex-col-reverse">
+                            <input id="phone" name="name" type="text" value="" class="focus:shadow-xl focus:ring-[.9px] focus:ring-[#CB3D30] border border-gray-300 px-3 pb-3 pt-2 rounded-md leading-none outline-none">
+                            <label class="mb-2 font-semibold" for="">Số điện thoại</label    >
+                        </div>
+                        <div></div>
+                        <div class="flex justify-end pt-6">
+                            <button id="update" class="px-12 pb-[14px] pt-3 font-semibold rounded-md leading-none outline-none bg-gradient-to-r via-[#c73130] from-[#ffd400] to-[#663695] text-white">Cập nhật</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div>
+                <ul>
+                    <li>
+                        <a href="#" class="block px-4 py-3 border-b border-gray-200 text-base font-semibold hover:text-[#CB3D30]">Tài khoản</a>
+                    </li>
+                    <li>
+                        <a href="/orders.html" class="block px-4 py-3 border-b border-gray-200 text-base font-semibold hover:text-[#CB3D30]">Lịch sử mua hàng</a>
+                    </li>
+                    <li>
+                        <a href="#" class="block px-4 py-3 border-b border-gray-200 text-base font-semibold hover:text-[#CB3D30]">Đổi mật khẩu</a>
+                    </li>
+                    <li>
+                        <a href="/logout.html" class="block px-4 py-3 border-b border-gray-200 text-base font-semibold hover:text-[#CB3D30]">Đăng xuất</a>
+                    </li>
+
+                </ul>
+            </div>
+            
+        </div>

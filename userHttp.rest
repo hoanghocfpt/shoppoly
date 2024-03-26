@@ -1,0 +1,35 @@
+GET http://localhost:3000/api/users
+
+###
+
+GET http://localhost:3000/api/users/66017911a96e95281c89dd8f
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZmYzNmNmOWM3NmJjYzg0MTExMjY1ZiIsImlhdCI6MTcxMTM3MTUwNSwiZXhwIjoxNzExMzc1MTA1fQ.6kbYCmqAEi2E_21stJGucgNjS4klrsEX3EQ66l3tfJA
+###
+POST http://localhost:3000/api/auth
+Content-Type: application/json
+
+{
+    "email": "phamvanhoang182004@gmail.com",
+    "password": "123456"
+}
+
+###
+
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+    "firstName": "Truc",
+    "lastName": "Tran",
+    "email": "tranthiytruc@gmail.com",
+    "password": "123456",
+    "phone": "1234567890"
+}
+
+###
+DELETE http://localhost:3000/api/users/65fee9b47fa3a64dfbdb80b0
+
+###
+
+GET http://localhost:3000/api/protected
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZmYzNmNmOWM3NmJjYzg0MTExMjY1ZiIsImlhdCI6MTcxMTM3MTUwNSwiZXhwIjoxNzExMzc1MTA1fQ.6kbYCmqAEi2E_21stJGucgNjS4klrsEX3EQ66l3tfJA
