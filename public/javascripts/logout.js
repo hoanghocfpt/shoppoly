@@ -1,5 +1,6 @@
 function logout() {
   localStorage.removeItem('user');
-  window.location.href = '/login.html';
+  localStorage.removeItem('token');
+  window.location.href = '/auth/dang-nhap';
 }
 logout();

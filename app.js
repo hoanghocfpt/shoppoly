@@ -51,7 +51,7 @@ app.use('/category', categoryRouter); // Add this line
 app.use('/product', productRouter); // Add this line
 app.use('/auth', loginRouter);
 app.use('/search', searchRouter);
-app.use('/user', userRouter);
+app.use('/khach-hang', userRouter);
 app.use('/blog', blogRouter); // Add this line
 app.use('/api', apiRouter);
 app.use('/admin', adminRouter); // Add this line  

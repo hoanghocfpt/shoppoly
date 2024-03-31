@@ -10,4 +10,14 @@ router.get('/', async function(req, res, next) {
   }
 });
 
+/* GET home page. */
+router.get('/home', async function(req, res, next) {
+  try {
+    res.render('user/home', { title: 'Trang chủ', js: 'home'});
+
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 module.exports = router;

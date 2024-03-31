@@ -1,63 +1,97 @@
+document.querySelector('#searchAccount').addEventListener('click', (e) => {
+  e.preventDefault();
+  searchAccount();
+  return false;
+});
 
-async function login(email, password) {
-    const res = await fetch('/api/auth', {
+function searchAccount() {
+    let email = document.querySelector('#email').value;
+    fetch(`http://localhost:3000/api/forgot-password/`,{
         method: 'POST',
-        body: JSON.stringify({ email: email, password: password }),
         headers: {
             'Content-Type': 'application/json'
-        }
-    });
-    return res;
-}
-
-
-
-if(localStorage.getItem('user') != null){
-    window.location.href = '/home';
-}
-
-
-
-function saveLocal(data){
-    localStorage.setItem('user', JSON.stringify(data.user));
-    localStorage.setItem('token', JSON.stringify(data.accessToken));
-}
-
-
-document.querySelector("#login").addEventListener("click", (event) => {
-    event.preventDefault();
-    const email = document.querySelector('#email').value;
-    const password = document.querySelector('#password').value;
-    const res = login(email,password);
-    res.then(data => data.json())
-    .then(data => {
-        if(data.accessToken === undefined){
-            const toast = Toast('Email hoặc mật khẩu không đúng.', 'danger');
-            document.querySelector('body').innerHTML += toast;
-            setTimeout(() => {
-                document.querySelector('#toast-danger').remove();
-            }, 2000);
-        }else{
-            saveLocal(data);
-            const toast = Toast('Đăng nhập thành công.', 'success');
-            document.querySelector('body').innerHTML += toast;
-            setTimeout(() => {
-                document.querySelector('#toast-success').remove();
-                window.location.href = '/home';
-            }, 2000);
-            
-        }
-    }).catch(err => {
-        console.log(err);
+        },
+        body: JSON.stringify({
+            email: email
+        })
     })
-    
-})
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        if (data.message == 'Email not found') {
+            const toast = Toast('Không tìm thấy tài khoản', 'danger');
+            // document.querySelector('body').innerHTML += toast
+            // setTimeout(() => {
+            // document.querySelector('#toast-danger').remove();
+            // }, 2000);
+            return false;
+        } else {
+            // Update UI
+            document.querySelector('#otpDiv').classList.remove('hidden');
+            document.querySelector('#newPasswordDiv').classList.remove('hidden');
+            document.querySelector('#email').setAttribute('value', data.email);
+            document.querySelector('#email').setAttribute('readonly', 'true');
+            document.querySelector('#email').classList.add('bg-gray-100');
+            document.querySelector('#verifyOtp').classList.remove('hidden');
+            document.querySelector('#searchAccount').classList.add('hidden');
+            // console.log(data.email);
+            const toast = Toast('Kiểm tra email để lấy mã OTP', 'success');
+            // document.querySelector('body').innerHTML += toast
+            // setTimeout(() => {
+            // document.querySelector('#toast-success').remove();
+            // }, 2000);
+            return true;
+        }
+    })
+}
+
+
+document.querySelector('#verifyOtp').addEventListener('click', (e) => {
+    e.preventDefault();
+    verifyOtp();
+    return false;
+});
+
+function verifyOtp() {
+    let email = document.querySelector('#email').value;
+    let otp = document.querySelector('#otp').value;
+    let newPassword = document.querySelector('#newPassword').value;
+    console.log(email, otp, newPassword);
+    fetch(`http://localhost:3000/api/verify-otp/`,{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: email,
+            otp: otp,
+            newPassword: newPassword
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        if (data.message == 'OTP not found') {
+            // const toast = Toast('Mã OTP không đúng', 'danger');
+            // document.querySelector('body').innerHTML += toast
+            // setTimeout(() => {
+            // document.querySelector('#toast-danger').remove();
+            // }, 2000);
+          
+        } else {
+            // const toast = Toast('Đổi mật khẩu thành công', 'success');
+            // document.querySelector('body').innerHTML += toast
+            // setTimeout(() => {
+            // document.querySelector('#toast-success').remove();
+            // }, 2000);
+      
+        }
+    })
+}
 
 
 
-
-
-
+ 
 const Toast = (message, type) => {
     let html = ''
     switch (type) {
@@ -130,5 +164,6 @@ const Toast = (message, type) => {
         </div>`
     }
     return html;
-}
-
+    }
+        
+        
