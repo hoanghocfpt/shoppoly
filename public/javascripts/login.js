@@ -12,7 +12,7 @@ async function login(email, password) {
 
 
 
-if(localStorage.getItem('user') != null){
+if(localStorage.getItem('token') != null){
     window.location.href = '/home';
 }
 
@@ -20,7 +20,7 @@ if(localStorage.getItem('user') != null){
 
 function saveLocal(data){
     localStorage.setItem('user', JSON.stringify(data.user));
-    localStorage.setItem('token', JSON.stringify(data.accessToken));
+    localStorage.setItem('token', JSON.stringify({accessToken: data.accessToken, refreshToken: data.refreshToken}));
 }
 
 
@@ -31,7 +31,7 @@ document.querySelector("#login").addEventListener("click", (event) => {
     const res = login(email,password);
     res.then(data => data.json())
     .then(data => {
-        if(data.accessToken === undefined){
+        if(data === undefined){
             const toast = Toast('Email hoặc mật khẩu không đúng.', 'danger');
             document.querySelector('body').innerHTML += toast;
             setTimeout(() => {

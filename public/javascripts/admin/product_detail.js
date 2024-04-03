@@ -1,3 +1,4 @@
+
 const pathname = window.location.pathname; 
 const id = pathname.split('/').pop();
 console.log(id);
@@ -71,10 +72,12 @@ function renderProduct(product) {
 
 
 function updateProduct(id, slug, title, price, priceOld, origin, brand){
+    const token = JSON.parse(localStorage.getItem('token'));
     const opt = {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
+            'authorization': 'Bearer ' + token.accessToken
         },
         body: JSON.stringify({
             slug: slug,
@@ -119,10 +122,12 @@ document.querySelector('#update').addEventListener('click', (event) => {
 
 // delete caqtegory
 function deleteProduct(id){
+    const token = JSON.parse(localStorage.getItem('token'));
     fetch(`http://localhost:3000/api/products/${id}`, {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'authorization': 'Bearer ' + token.accessToken,
             },
         })
         .then(response => response.json())
@@ -136,3 +141,21 @@ document.querySelector('#delete').addEventListener('click', (event) => {
     window.location.href = `/admin/products`
    
 })
+
+
+
+function refreshToken () {
+    const refreshToken = JSON.parse(localStorage.getItem('token')).refreshToken;
+    const data = fetch('/api/refresh-token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({refreshToken})
+    })
+    return data
+}
+
+function saveLocal(data){
+    localStorage.setItem('token', JSON.stringify({accessToken: data.accessToken, refreshToken: data.refreshToken}));
+}

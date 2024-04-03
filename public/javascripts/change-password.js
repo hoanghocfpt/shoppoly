@@ -1,12 +1,12 @@
-if(localStorage.getItem('user') === null || localStorage.getItem('token') === null){
+if(!localStorage.getItem('token') || localStorage.getItem('token') === null){
     window.location.href = '/auth/dang-nhap';
-}
+  }
 const id = JSON.parse(localStorage.getItem('user')).id;
 console.log(id);
 async function getUserData() {
     const token = JSON.parse(localStorage.getItem('token'));
     const headers = {
-        'authorization': `Bearer ${token}`
+        'authorization': `Bearer ${token.accessToken}`
     }
     const data = await fetch(`/api/users/${id}`,{headers})
   
@@ -95,7 +95,7 @@ async function updatePassword(oldPassword, newPassword, id, token) {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
-            'authorization': `Bearer ${token}`
+            'authorization': `Bearer ${token.accessToken}`
         },
         body: JSON.stringify({ oldPassword: oldPassword, newPassword: newPassword })
     })

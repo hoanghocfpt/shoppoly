@@ -28,14 +28,13 @@ function searchAccount() {
         } else {
             // Update UI
             document.querySelector('#otpDiv').classList.remove('hidden');
-            document.querySelector('#newPasswordDiv').classList.remove('hidden');
             document.querySelector('#email').setAttribute('value', data.email);
             document.querySelector('#email').setAttribute('readonly', 'true');
             document.querySelector('#email').classList.add('bg-gray-100');
             document.querySelector('#verifyOtp').classList.remove('hidden');
             document.querySelector('#searchAccount').classList.add('hidden');
             // console.log(data.email);
-            const toast = Toast('Kiểm tra email để lấy mã OTP', 'success');
+            // const toast = Toast('Kiểm tra email để lấy mã OTP', 'success');
             // document.querySelector('body').innerHTML += toast
             // setTimeout(() => {
             // document.querySelector('#toast-success').remove();
@@ -55,8 +54,7 @@ document.querySelector('#verifyOtp').addEventListener('click', (e) => {
 function verifyOtp() {
     let email = document.querySelector('#email').value;
     let otp = document.querySelector('#otp').value;
-    let newPassword = document.querySelector('#newPassword').value;
-    console.log(email, otp, newPassword);
+
     fetch(`http://localhost:3000/api/verify-otp/`,{
         method: 'POST',
         headers: {
@@ -64,26 +62,74 @@ function verifyOtp() {
         },
         body: JSON.stringify({
             email: email,
-            otp: otp,
+            otp: otp
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        if (data.status === 401 || data.status === 403) {
+            // const toast = Toast('Mã OTP không đúng', 'danger');
+            // document.querySelector('body').innerHTML += toast
+            // setTimeout(() => {
+            // document.querySelector('#toast-danger').remove();
+            // }, 2000);
+            console.log('Mã OTP không đúng hoặc đã hết hạn');
+            alert('Mã OTP không đúng hoặc đã hết hạn')
+            return false
+        } else {
+            // Update UI
+            document.querySelector('#newPasswordDiv').classList.remove('hidden');
+            document.querySelector('#otpDiv').classList.add('hidden')
+            document.querySelector('#verifyOtp').classList.add('hidden');
+            document.querySelector('#resetPassword').classList.remove('hidden')
+            // const toast = Toast('Đổi mật khẩu thành công', 'success');
+            // document.querySelector('body').innerHTML += toast
+            // setTimeout(() => {
+            // document.querySelector('#toast-success').remove();
+            // }, 2000);
+            console.log('Tiếp tục');
+      
+        }
+    })
+}
+
+
+document.querySelector('#resetPassword').addEventListener('click', (e) => {
+    e.preventDefault();
+    resetPassword();    
+});
+
+function resetPassword () {
+    let newPassword = document.querySelector('#newPassword').value;
+    let email = document.querySelector('#email').value
+    fetch(`http://localhost:3000/api/reset-password/`,{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: email,
             newPassword: newPassword
         })
     })
     .then(response => response.json())
     .then(data => {
         console.log(data);
-        if (data.message == 'OTP not found') {
+        if (data.status === 500) {
             // const toast = Toast('Mã OTP không đúng', 'danger');
             // document.querySelector('body').innerHTML += toast
             // setTimeout(() => {
             // document.querySelector('#toast-danger').remove();
             // }, 2000);
-          
+            console.log('Lỗi');
         } else {
             // const toast = Toast('Đổi mật khẩu thành công', 'success');
             // document.querySelector('body').innerHTML += toast
             // setTimeout(() => {
             // document.querySelector('#toast-success').remove();
             // }, 2000);
+            console.log('Đổi mật khẩu thành công');
       
         }
     })

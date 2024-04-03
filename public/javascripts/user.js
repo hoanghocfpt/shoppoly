@@ -1,24 +1,58 @@
-if(localStorage.getItem('user') === null || localStorage.getItem('token') === null){
+if(!localStorage.getItem('token') || localStorage.getItem('token') === null){
   window.location.href = '/auth/dang-nhap';
 }
 const id = JSON.parse(localStorage.getItem('user')).id;
 console.log(id);
 async function getUserData() {
   const token = JSON.parse(localStorage.getItem('token'));
+  console.log(token.accessToken);
   const headers = {
-    'authorization': `Bearer ${token}`
+    'authorization': `Bearer ${token.accessToken}`
   }
   const data = await fetch(`/api/users/${id}`,{headers})
 
-  if(data.status === 401 || data.status === 403){
+  
+  if(data.status === 401){
     window.location.href = '/auth/dang-xuat';
   }
-  reunderUserInfo(await data.json())
+  if(data.status === 403){
+    // neu het han
+    refreshToken()
+    .then(dataToken => dataToken.json())
+    .then(dataToken => {
+      saveLocal(dataToken);
+    })
+  }
+  return data;
 }
 
-getUserData();
+function refreshToken () {
+  const refreshToken = JSON.parse(localStorage.getItem('token')).refreshToken;
+  const data = fetch('/api/refresh-token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({refreshToken})
+  })
+  return data
+}
 
-function reunderUserInfo(data){
+
+function saveLocal(data){
+  localStorage.setItem('token', JSON.stringify({accessToken: data.accessToken, refreshToken: data.refreshToken}));
+}
+
+getUserData()
+.then(data => data.json())
+.then(data => {
+  renderUserInfo(data.user);
+})
+.catch(err => {
+  console.log(err);
+})
+
+function renderUserInfo(data){
   console.log(data);
   document.querySelector('#firstname').value = data.firstName;
   document.querySelector('#lastname').value = data.lastName;
@@ -69,7 +103,7 @@ function updateUserInfo() {
     
     headers: {
       'Content-Type': 'application/json',
-      'authorization': `Bearer ${token}`
+      'authorization': `Bearer ${token.accessToken}`
     },
     body: JSON.stringify({
       firstName: firstname,

@@ -1,3 +1,8 @@
+const token = JSON.parse(localStorage.getItem('token'));
+if (!token) {
+    alert('Bạn không có quyền truy cập. Vui lòng đăng nhập');
+    window.location.href = '/admin/products';
+}
 
 function addProduct(title, slug, price, priceOld, origin, brand, category, images){
     console.log(title,slug,price, priceOld, origin, brand, category, images)
@@ -5,6 +10,7 @@ function addProduct(title, slug, price, priceOld, origin, brand, category, image
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'authorization': 'Bearer ' + token.accessToken
         },
         body: JSON.stringify({
             slug: slug,
@@ -20,6 +26,20 @@ function addProduct(title, slug, price, priceOld, origin, brand, category, image
         })
     }
     const res = fetch(`http://localhost:3000/api/products/`, opt)
+    .then(res => {
+        res.json()
+        if (res.status === 403) {
+            refreshToken()
+            .then(res => res.json())
+            .then(data => {
+                console.log(data.user);
+                saveLocal(data.user);
+                
+                return addProduct(title, slug, price, priceOld, origin, brand, category, images);
+            });
+        }
+        return res;
+    })
     return res;
 }
 
@@ -153,3 +173,21 @@ document.querySelector('#add').addEventListener('click', (event) => {
         alert('Tạo sản phẩm thành công!!!')
     })
 })
+
+
+function refreshToken () {
+    const refreshToken = JSON.parse(localStorage.getItem('token')).refreshToken;
+    const data = fetch('/api/refresh-token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({refreshToken})
+    })
+    console.log(data);
+    return data
+}
+
+function saveLocal(data){
+    localStorage.setItem('token', JSON.stringify({accessToken: data.accessToken, refreshToken: data.refreshToken}));
+}

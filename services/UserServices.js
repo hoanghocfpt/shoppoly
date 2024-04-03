@@ -4,8 +4,8 @@ exports.getAll = async () => {
     return await User.find();
 }
 
-exports.getOne = async (id) => {
-    return await User.findById(id);
+exports.getOne = async (data) => {
+    return await User.findById(data);
 }
 
 exports.getOneByEmail = async (email) => {
@@ -24,12 +24,10 @@ exports.create = async (data) => {
     return await User.create(data);
 }
 
-exports.update = async (id, data, method) => {
-    if (method === 'PUT') {
-        return await User.findByIdAndUpdate(id, data, {new: true});
-    }
-    return await User.findByIdAndUpdate(id, data, {new: true});
+exports.update = async (id, data) => {
+    return await User.findByIdAndUpdate(id, data, { new: true });
 }
+
 
 exports.updatePassword = async (id, password) => {
     var salt = bcrypt.genSaltSync(10);

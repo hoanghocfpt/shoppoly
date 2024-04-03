@@ -1,15 +1,28 @@
+const token = JSON.parse(localStorage.getItem('token'));
+if (!token) {
+    alert('Bạn không có quyền truy cập. Vui lòng đăng nhập');
+    window.location.href = '/admin/categories';
+}
 async function addCategory(slug, name, thumbnail, status) {
+    
     try {
         const res = await fetch(`/api/categories/`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${token.accessToken}`
             },
             body: JSON.stringify({ slug, name, thumbnail, status })
         });
 
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
+        if (res.status === 403) {
+            refreshToken()
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                saveLocal(data);
+                return addCategory(slug, name, thumbnail, status);
+            });
         }
 
         return res;
@@ -69,4 +82,21 @@ function uploadFile() {
     .catch(error => {
         console.error('Có lỗi xảy ra:', error);
     });
+}
+
+
+function refreshToken () {
+    const refreshToken = JSON.parse(localStorage.getItem('token')).refreshToken;
+    const data = fetch('/api/refresh-token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({refreshToken})
+    })
+    return data
+}
+
+function saveLocal(data){
+    localStorage.setItem('token', JSON.stringify({accessToken: data.accessToken, refreshToken: data.refreshToken}));
 }

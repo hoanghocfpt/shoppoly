@@ -4,32 +4,75 @@ exports.getAll = async () => {
     const products = await ProductServices.getAll();
     return products;
 }
-
-exports.getOne = async (id) => {
-    const product = await ProductServices.getOne(id);
-    return product;
+exports.getProducts = async function(req, res) {
+    try {
+        const products = await ProductServices.getAll();
+        res.json(products);
+    } catch (error) {
+        res.status(500).send(error);
+    }
 }
 
-exports.getAllBySlugCategory = async (slug) => {
-    const product = await ProductServices.getAllBySlugCategory(slug)
-    return product
-}
-exports.getOneBySlug = async (slug) => {
-    const product = await ProductServices.getOneBySlug(slug);
-    return product;
-}
-
-exports.update = async (id, data, method) => {
-    const product = await ProductServices.update(id, data, method);
-    return product;
+exports.getProductSlug = async function(req, res) {
+    try {
+        const slug = req.params.slug;
+        const product = await ProductServices.getOneBySlug(slug);
+        res.json(product);
+    } catch (error) {
+        res.status(500).send(error);
+    }
 }
 
-exports.create = async (data) => {
-    const product = await ProductServices.create(data);
-    return product;
+exports.getProductId = async function(req, res) {
+    try {
+        const id = req.params.id;
+        console.log(id);
+        const product = await ProductServices.getOne(id);
+        res.json(product);
+    } catch (error) {
+        res.status(500).send(error);
+    }
 }
 
-exports.delete = async (id) => {
-    const product = await ProductServices.delete(id);
-    return product;
+exports.getProductsByCategorySlug = async function(req, res) {
+    try {
+        const slug = req.params.slug;
+        console.log(slug)
+        const products = await ProductServices.getAllBySlugCategory(slug);
+        console.log(products);
+        res.json(products);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+}
+
+exports.patchProduct = async function(req, res) {
+    try {
+        const id = req.params.id;
+        console.log(id, req.body);
+        const category = await ProductServices.update(id,req.body, 'PATCH');
+        res.json(category);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+}
+
+
+exports.postProduct = async function(req, res) {
+    try {
+        const product = await ProductServices.create(req.body)
+        res.json(product);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+}
+
+exports.deleteProduct = async function(req,res){
+    try {
+        const id = req.params.id
+        const product = await ProductServices.delete(id)
+        res.status(200).json(product)
+    } catch (error) {
+        res.status(500).send(error)
+    }
 }
